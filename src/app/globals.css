@@ -1844,6 +1844,7 @@ html {
   font-size: 0.875rem;
   line-height: 1.25rem}
 .chat-bubble {
+  white-space: pre-wrap;
   position: relative;
   display: block;
   width: fit-content;
@@ -50376,4 +50377,8 @@ input[type="checkbox"]:checked
 
       .message-background {
         background-image: repeating-linear-gradient(45deg,hsl(var(--b1)),hsl(var(--b1)) 13px,hsl(var(--b2)) 13px,hsl(var(--b2)) 14px);
+    }
+
+    .tiptap {
+    outline: none;
     }

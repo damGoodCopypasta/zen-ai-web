@@ -23,7 +23,7 @@ const getInitials = (name: string) => {
 
 export const Table = async () => {
   // test suspense by waiting here
-  const data = await fetch("http://127.0.0.1:8000/tickets", {
+  const data = await fetch(`http://${process.env.DOMAIN}:8000/tickets`, {
     cache: "no-store",
   });
   const tickets = (await data.json()) as Ticket[];

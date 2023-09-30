@@ -3,11 +3,18 @@
 
 import React, { useState, useRef } from "react";
 export type Message = { role: "user" | "assistant"; content: string };
+import { RichEditor } from "./richEditor";
+import { useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+
+import { Modal } from "./modal";
 export const GenerateBtn = ({
   messages,
+  ticket = "",
   canCopy = true,
 }: {
   messages: Message[];
+  ticket?: string;
   canCopy?: boolean;
 }) => {
   const [data, setData] = useState<null | {
@@ -29,9 +36,6 @@ export const GenerateBtn = ({
   const [isLoading, setLoading] = useState<null | Boolean>(null);
   const messageRef = useRef<HTMLElement>(null);
   const handler = () => {
-    // setLoading(false);
-    // setData({ data: { message: "hello" } });
-    // return;
     setLoading(true);
     fetch(`/ticket/api/generate/`, {
       method: "POST",
@@ -47,6 +51,13 @@ export const GenerateBtn = ({
       });
   };
   const message = data?.data.message;
+  const editor = useEditor({
+    extensions: [StarterKit],
+  });
+
+  if (message && !editor?.getText()) {
+    editor!.commands.setContent(message);
+  }
 
   const copyRefText = () => {
     toggleToast();
@@ -56,6 +67,11 @@ export const GenerateBtn = ({
     }
   };
 
+  const resetStates = () => {
+    setData(null);
+    setLoading(null);
+    editor!.commands.clearContent();
+  }
   return (
     <>
       {(isLoading === null || (message && !canCopy)) && (
@@ -74,7 +90,7 @@ export const GenerateBtn = ({
                 <span className="loading loading-dots loading-sm"></span>
               ) : (
                 <span className="whitespace-pre-line" ref={messageRef}>
-                  {message}
+                  {editor && <RichEditor editor={editor} />}
                 </span>
               )}
             </div>
@@ -87,6 +103,7 @@ export const GenerateBtn = ({
               >
                 COPY_RESPONSE
               </button>
+              <Modal html_body={()=>editor?.getHTML() as string} ticket={ticket} onSubmit={resetStates}/>
             </div>
           )}
           {showToast && (

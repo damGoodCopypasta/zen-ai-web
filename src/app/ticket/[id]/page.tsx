@@ -8,7 +8,7 @@ export default function Ticket({
   params: { id: string; summary: string };
 }) {
   return (
-    <main className="flex min-h-screen flex-col items-center  p-24">
+    <main className="flex min-h-screen flex-col items-center  md:p-24 pt-12">
       <div className="w-full flex justify-start absolute top-0 left-0">
         <Link href="/">
           <button className="btn  m-4 mb-0">GO_BACK</button>

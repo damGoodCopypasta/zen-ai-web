@@ -3,7 +3,7 @@ import { GenerateBtn } from "./generate";
 import { Message } from "./generate";
 export const Conversation = async ({ ticket }: { ticket: string }) => {
   const data = await fetch(
-    `http://127.0.0.1:8000/comments?ticket=${ticket}`,
+    `http://${process.env.DOMAIN}:8000/comments?ticket=${ticket}`,
     {
       cache: "no-store",
     }
@@ -36,7 +36,7 @@ export const Conversation = async ({ ticket }: { ticket: string }) => {
           );
         })}
 
-        <GenerateBtn messages={messages} />
+        <GenerateBtn messages={messages} ticket={ticket}/>
       </div>
     </div>
   );
